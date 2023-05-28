@@ -1,0 +1,56 @@
+program:
+  main_train_seg_loss.py
+name:
+  loss_training
+method: grid
+parameters:
+  exp_name:
+    values: ["deep_loss_adv_clean_gt_soft"]
+  input_size:
+    values: [384]
+  lr:
+    values: [5e-4]
+#    values: [5e-4]
+  unet_depth:
+    values: [2]
+  loss:
+    values: ["IoU"]
+  data_cls_sub:
+    values: ["A"]
+  epochs:
+    values: [25]
+  batch_size:
+#    values: [8]
+    values: [16] # adversarial attack doesn't fit with 32
+  patch_size:
+    values: [16]
+  num_workers:
+    values: [8]
+  learn_loss:
+    values: ['l1']
+  learn_method:
+#    values: ['qual', 'ref']
+    values: ['ref']
+  min_dist:
+    values: [0]
+  max_dist:
+      values: [5]
+  run_name:
+    values: ['sweep_aspect2_pascal_A_SEG+REC_ps_16_p_ar']
+#    python -m torch.distributed.launch --nproc_per_node=3 main_finetune_self_base.py --world_size 3
+  binarize_pred_gt:
+    values: [0]
+command:
+  - ${env}
+  - python
+  - "-m"
+  - torch.distributed.launch
+  - "--nproc_per_node=1"
+  - "--master_port=2952"
+  - ${program}
+  - "--world_size=1"
+  - ${args}
+project:
+  TTA-finetune
+entity:
+  klara

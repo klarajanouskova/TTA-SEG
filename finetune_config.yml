@@ -1,0 +1,26 @@
+program:
+  main_finetune_self_base.py
+method: grid
+parameters:
+  batch_size:
+    value: 128
+  lr:
+    values: [1e-3, 1e-4, 1e-5]
+  layer_decay:
+    values: [0.9]
+  accum_iter:
+    values: [3, 8]
+#    python -m torch.distributed.launch --nproc_per_node=3 main_finetune_self_base.py --world_size 3
+command:
+  - ${env}
+  - python
+  - "-m"
+  - torch.distributed.launch
+  - "--nproc_per_node=4"
+  - ${program}
+  - "--world_size=4"
+  - ${args}
+project:
+  TTA-finetune
+entity:
+  klara

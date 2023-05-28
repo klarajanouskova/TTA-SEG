@@ -1,0 +1,38 @@
+program:
+  main_train_seg_loss_sam.py
+name:
+  loss_training
+method: grid
+parameters:
+  exp_name:
+    values: ["sam_deep_loss_adv"]
+  lr:
+    values: [1e-3]
+  epochs:
+    values: [1]
+  batch_size:
+    values: [8] # input size is large..
+  num_workers:
+    values: [8]
+  learn_loss:
+    values: ['l1']
+  learn_method:
+    values: ['ref']
+#    values: ['ref']
+  sam_conf:
+    values: [0.9]
+#    python -m torch.distributed.launch --nproc_per_node=3 main_train_seg_loss_sam.py --world_size 3
+command:
+  - ${env}
+  - python
+  - "-m"
+  - torch.distributed.launch
+  - "--nproc_per_node=1"
+  - "--master_port=2957"
+  - ${program}
+  - "--world_size=1"
+  - ${args}
+project:
+  TTA-finetune
+entity:
+  klara

@@ -1,0 +1,15 @@
+*.pth
+wandb
+out
+ckpts
+*__pycache__*
+visualization
+results*
+.DS_Store
+.idea
+.ipynb_checkpoints/
+pascal_tta*
+pascal_results
+tta_analysis
+*.pyc
+SAM/sam_vit_b.pth

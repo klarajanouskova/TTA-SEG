@@ -1,0 +1,40 @@
+program:
+  main_finetune_seg.py
+name:
+  unet
+method: grid
+parameters:
+  exp_name:
+    values: ["unet"]
+  input_size:
+    values: [384]
+  lr:
+    values: [5e-5]
+  layer_decay:
+    values: [1]
+  rec_weight:
+    values: [1.0]
+  seg_weight:
+    values: [1.]
+  unet_depth:
+    values: [2, 3]
+  loss:
+    values: ["BCE+IoU", "BCE"]
+  epochs:
+    values: [10]
+  test:
+    values: [0]
+#    python -m torch.distributed.launch --nproc_per_node=3 main_finetune_self_base.py --world_size 3
+command:
+  - ${env}
+  - python
+  - "-m"
+  - torch.distributed.launch
+  - "--nproc_per_node=4"
+  - ${program}
+  - "--world_size=4"
+  - ${args}
+project:
+  TTA-finetune
+entity:
+  klara
